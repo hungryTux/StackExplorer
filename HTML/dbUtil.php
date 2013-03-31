@@ -3,7 +3,7 @@
 class dbUtil {
 
   private $user = 'vsanjit';  //Put your username here 
-  private $pswd = 'oracleforV44';  //Put your password here 
+  private $pswd = '';  //Put your password here 
   private $db = '//oracle.cise.ufl.edu/orcl';
   private $conn; 
   private $query; 
