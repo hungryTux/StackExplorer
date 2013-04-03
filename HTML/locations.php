@@ -17,6 +17,7 @@
 					<a href="/" style="display:block;width:200px">Stack Explorer</a>
 				</div>
 				<div id="hmenus" style="margin:57px 12px 0 0;overflow:hidden;">
+                    <!--
                 	<div class="nav mainnavs">
 						<ul>
 							<li class="youarehere" >
@@ -36,6 +37,7 @@
 							</li>
 						</ul>
 					</div>
+                    -->
                 </div>
 			</div>
             <div id="content" style="float:left;width:930px;">
