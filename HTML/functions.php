@@ -1,5 +1,12 @@
 <?php
 
+  function printLogo() {
+
+    $html = '<div style="text-align: left; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>';
+
+    print $html;
+  }
+
   function printUserProfile($userId) {
 
     require_once 'dbUtil.php';
@@ -89,5 +96,47 @@
   
   
   }
+
+  function getPost($postid)
+  {
+    require_once 'dbUtil.php';
+
+    $array=array();
+
+
+    $db = new dbUtil();
+    $sql ="Select title,body,acceptedanswerid from posts where id=".$postid;
+
+    if($db->query($sql))
+    {
+      $row = $db->fetch();
+      $array[0]=$row['TITLE'];
+      $array[1]=$row['BODY']->load();
+      $post_answer_id=$row->ACCEPTEDANSWERID;
+
+    }
+    else
+    {
+      print("error");
+    }
+
+    $db->free_statement();
+
+    $sql = "SELECT BODY FROM POSTS WHERE ID=8".$post_answer_id;
+
+    if($db->query($sql))
+    {
+      $row = $db->fetch();
+      $array[2]=$row['BODY']->load();
+    }
+    else
+    {
+      print("error");
+    }
+
+    $db->done();
+
+    return $array;
+  }   
 
 ?>

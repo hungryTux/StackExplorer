@@ -51,7 +51,7 @@
       $color = '#' . sprintf('%02s', dechex($r)) . sprintf('%02s', dechex($g)) . sprintf('%02s', dechex($b));
 
 
-      $cloud .= "<a class=\"likebutton\" style=\"font-size: {$font_size}px; background: $color;\" href=\"tag.php&tag=$word\">$word</a> ";
+      $cloud .= "<a class=\"anchor-button\" style=\"font-size: {$font_size}px;\" href=\"tag.php&tag=$word\">$word</a> ";
 
     }
 
@@ -82,31 +82,25 @@
            -webkit-border-radius: 10px
     }
 
-    .likebutton {
-            appearance: button;
-            -moz-appearance: button;
-            -webkit-appearance: button;
-            text-decoration: none; font: menu; color: ButtonText;
-            display: inline-block; padding: 4px;
-            margin: 0 0px 2px 0px;
-    }
-
     .tagcloud {
            width: 90%;
            margin: 0 auto;
            padding: 15px;
            overflow: hidden;
            text-align: justify;
-           border: 1px solid red
     }
     </style>
+
 </head>
 
 <body>
 
     
     <?php 
+         require_once 'functions.php'; 
+
          collectTags(); 
+         printLogo();
          print_tag_cloud();
     ?>
 

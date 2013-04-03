@@ -9,6 +9,8 @@
    //Debug-only
    $userId = '5973';
 
+   printLogo();
+
    printUserProfile($userId);
 
 ?>
