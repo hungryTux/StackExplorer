@@ -16,7 +16,6 @@
 				<div id="hlogo" style="float:left;margin:57px 12px 0 0;overflow:hidden;width:200px">
 					<a href="/">Stack Explorer</a>
 				</div>
-                <!--
 				<div id="hmenus" style="margin:57px 12px 0 0;overflow:hidden;">
                 	<div class="nav mainnavs" >
 						<ul>
@@ -38,7 +37,6 @@
 						</ul>
 					</div>
                 </div>
-                -->
 			</div>
             <div id="content" style="float:left;width:930px;">
 	            <div itemscope="" itemtype="http://schema.org/Article">
