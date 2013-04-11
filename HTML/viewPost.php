@@ -5,9 +5,6 @@
         $handler = new UrlHandler($_GET);
         $postId = $handler->get_var('postId');
 
-        //Debug-only
-        $postId = '4';
-                  
         $array=getPost($postId);
 ?>
 

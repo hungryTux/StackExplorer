@@ -3,7 +3,7 @@
   function printLogo() {
 
     $html = '<script type="text/javascript" src=scripts/search.js></script>
-          <div style="float: left; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>
+          <div style="display: inline-block; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>
           <div style="float:right; padding:30px 60px 30px">
             <table cellpadding="0px" cellspacing="0px">
              <tr>
@@ -147,7 +147,11 @@
     if($db->query($sql))
     {
       $row = $db->fetch();
-      $array[2]=$row['BODY']->load();
+      if($row['BODY'] != null){
+       $array[2]=$row['BODY']->load();
+      } else {
+       $array[2]='No Answer Yet';
+      }
     }
     else
     {
