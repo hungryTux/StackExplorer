@@ -2,7 +2,27 @@
 
   function printLogo() {
 
-    $html = '<div style="text-align: left; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>';
+    $html = '<script type="text/javascript" src=scripts/search.js></script>
+          <div style="float: left; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>
+          <div style="float:right; padding:30px 60px 30px">
+            <table cellpadding="0px" cellspacing="0px">
+             <tr>
+               <td style="border-style:solid;border-color:#CCCCCC;border-width:1px;"> 
+                <select id="category" style="border-style: none; background-color:lightblue">
+                  <option value=0 selected=true>Tags</option>
+                  <option value=1>Posts</option>
+                </select>
+               </td>
+               <td style="border-style:solid;border-color:#CCCCCC;border-width:1px;"> 
+                <input type="text" id="search" onkeypress="expand(this);" onblur="shrink(this);" value="" style="width:100px; border:0px solid; height:18px; padding:0px 1px;">
+               </td>
+               <td style="border-style:solid;border-color:#CCCCCC;border-width:1px;"> 
+                <input type="button" value="Go" style="border-style: none; background-color:lightblue;" onClick="doSearch();">
+               </td>
+             </tr>
+            </table>
+            </div> ';
+           
 
     print $html;
   }
@@ -105,14 +125,14 @@
 
 
     $db = new dbUtil();
-    $sql ="Select title,body,acceptedanswerid from posts where id=".$postid;
+    $sql ="Select title,body,acceptedanswerid from ssriram.posts where id=".$postid;
 
     if($db->query($sql))
     {
       $row = $db->fetch();
       $array[0]=$row['TITLE'];
       $array[1]=$row['BODY']->load();
-      $post_answer_id=$row->ACCEPTEDANSWERID;
+      $post_answer_id=$row['ACCEPTEDANSWERID'];
 
     }
     else
@@ -122,7 +142,7 @@
 
     $db->free_statement();
 
-    $sql = "SELECT BODY FROM POSTS WHERE ID=8".$post_answer_id;
+    $sql = "SELECT BODY FROM ssriram.POSTS WHERE ID=".$post_answer_id;
 
     if($db->query($sql))
     {
