@@ -26,7 +26,7 @@ function doSearch() {
     }
 
     //View Tag Info, if its exists
-    window.location.assign("tag.php?tag="+searchText); 
+    window.location.assign("searchTags.php?query="+searchText); 
   
   } else {
  

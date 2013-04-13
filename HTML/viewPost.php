@@ -8,17 +8,12 @@
         $array=getPost($postId);
 ?>
 
-<html>
-
-  <head>
-    <title> Q&A </title>
-  </head>
-
-  <body>
-    <?php printLogo() ?>
+    <?php 
+        printHeader(); 
+    ?>
 
     <div id="content" style="margin: 0 auto;width: 960px; min-height: 450px">
-      <div id="post_title" style="font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;width: 960px;margin-bottom: 20px;border-bottom: 1px solid #cccccc; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204);">
+      <div id="post_title" style="font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;width: 960px;margin-bottom: 20px;">
         <h1><?php echo $array[0] ?></h1>
       </div>
       <div id="mainpost" style="float: left;margin-bottom: 40px; width: 735px;">
@@ -42,7 +37,7 @@
               <h2 style="float: left;font-size: 22px;line-height: 34px;margin-bottom: 0px;"> Accepted Answer </h2>
             </div>
           </div>
-          <div id="answer-text" style="border-bottom: 1px solid #aaa;width: 728px;padding-bottom: 20px;padding-top: 20px;">
+          <div id="answer-text" style="width: 728px;padding-bottom: 20px;padding-top: 20px;">
             <table>
               <tbody>
                 <tr>
