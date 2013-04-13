@@ -1,5 +1,28 @@
 <?php
 
+  function printHeader() {
+    $html = '<html>
+               <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                <title>StackExplorer</title>
+                <link rel="stylesheet" type="text/css" href="css/style.css">
+               </head>
+             <body>';
+
+    print $html;
+
+    printLogo();
+  }
+
+  function printFooter() {
+    $html = '<br/><br/>
+             <hr>
+            </body>
+         </html>';
+
+    print $html;
+  }
+
   function printLogo() {
 
     $html = '<script type="text/javascript" src=scripts/search.js></script>
@@ -21,7 +44,7 @@
                </td>
              </tr>
             </table>
-            </div> ';
+            </div><br/><br/><hr>';
            
 
     print $html;
@@ -162,5 +185,278 @@
 
     return $array;
   }   
+
+  function GetQuestionsForTag($tagval,$bool,$num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $compval = 'is null';
+      if($bool==  1){
+          $compval= '>0';
+      }
+      $cnt=0;
+      $sql = "SELECT * from(SELECT p.title as TITLE, p.id as ID from ssriram.posts p 
+        join (SELECT count(*) as cnt, postid from ssriram.votes where votetypeid=5 
+        group by postid order by cnt desc)v on v.postid=p.id  
+        where p.acceptedanswerid ".$compval." and p.tags like '%<".$tagval.">%' 
+        order by v.cnt desc )where rownum < ".$num;
+      //$sql = "SELECT p.title as TITLE, p.id as ID from ssriram.posts p join ( SELECT count(*) as cnt, postid from ssriram.votes where votetypeid=5 and rownum < ".$num." group by postid ) v on v.postid=p.id  where p.acceptedanswerid ".$compval." and p.tags like '<%".$tagval."%>' order by v.cnt desc";
+      if($db->query($sql)) {
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              if($bool==1) {
+                $html= $html."<a href=\"viewPost.php?postId=".$row['ID']."\">";
+              } else {
+                $html= $html."<a href=\"unanswered.php?postId=".$row['ID']."\">";
+              }
+              $html=$html.$row['TITLE'];
+              $html=$html."</a></li>";
+          }
+      }
+      if($cnt ==0) {
+        if($bool==0) {
+            $html="No Unanswered Questions";
+        }
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetUsersForTag($tagval,$num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      //select s.displayname from (select owneruserid from SSRIRAM.posts where rownum < 6 and 
+      // tags like '%<ajax>%' group by owneruserid order by count(*) desc) 
+      // o join ssriram.users s on o.owneruserid = s.id;
+      $sql = "SELECT s.displayname as DNAME, s.id as ID from (
+        SELECT owneruserid from SSRIRAM.posts where tags like '%<".$tagval.">%' 
+        group by owneruserid order by count(*) desc) o join SSRIRAM.users s on 
+        o.owneruserid = s.id where rownum < ".$num;
+      //echo $sql;
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html=$html.$row['DNAME'];
+              $html=$html."</a></li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetPostData($postID) {
+    require_once 'dbUtil.php';
+    $html = '';
+    $db = new dbUtil();
+    $obj = new Post();
+    $sql = "SELECT TITLE from SSRIRAM.posts where ID=".$postID;
+    if($db->query($sql)) {
+      while ($row = $db->fetch()) {
+        $obj->title=$row['TITLE'];
+      }
+    }
+    return $obj;
+    $db->done();
+  }
+
+  function GetTopUsersForBadges($badgeval,$num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      //select s.displayname from (select owneruserid from SSRIRAM.posts where rownum < 6 and 
+      // tags like '%<ajax>%' group by owneruserid order by count(*) desc) 
+      // o join ssriram.users s on o.owneruserid = s.id;
+      /*select * from (
+        select u.displayname, o.userid from ssriram.users u 
+        join 
+        (select a.owneruserid as userid,count(*) as cnt  from ssriram.posts p 
+          join ssriram.posts a on a.acceptedanswerid = p.id and a.owneruserid is not null group by a.owneruserid) o 
+        on o.userid=u.id 
+        where u.id in (select userid from ssriram.badges where name='Teacher') 
+        order by o.cnt desc) 
+      where rownum < 6 */
+      $sql = "SELECT * from (
+        SELECT u.displayname as UNAME, o.userid as ID from ssriram.users u 
+        join 
+        (SELECT a.owneruserid as userid, count(*) as cnt  from ssriram.posts p 
+          join ssriram.posts a on a.acceptedanswerid = p.id and a.owneruserid is not null group by a.owneruserid) o 
+        on o.userid=u.id 
+        where u.id in (select userid from ssriram.badges where name='".$badgeval."') 
+        order by o.cnt desc)
+      where rownum < ".$num;
+      
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html=$html.$row['UNAME'];
+              $html=$html."</a></li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetTopLocationsForBadges($badgeval,$num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      //select s.displayname from (select owneruserid from SSRIRAM.posts where rownum < 6 and 
+      // tags like '%<ajax>%' group by owneruserid order by count(*) desc) 
+      // o join ssriram.users s on o.owneruserid = s.id;
+      /*select count(*),location from ssriram.users 
+      where id in (select userid from ssriram.badges where name='Teacher') 
+      group by location order by count (*) desc;*/
+      $sql = "SELECT * from (SELECT location from ssriram.users where location is not null and id in (SELECT userid from ssriram.badges where name='".$badgeval."') group by location order by count (*) desc) where rownum < ".$num;
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"locations.php?loc=".$row['LOCATION']."\">";
+              $html=$html.$row['LOCATION'];
+              $html=$html."</a></li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetUsersForLoc($locval) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      $sql = "SELECT id, displayname from ssriram.users where location='".$locval."'";
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              if($row['DISPLAYNAME']==' ') {
+                $html=$html."user".$row['ID']."</a>";
+              } else  {
+                $html=$html.$row['DISPLAYNAME']."</a>";
+              }
+              $html=$html."</li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetTopAcceptedUsersForLoc($locval, $num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      $sql = "SELECT * from (select u.id as ID,u.displayname as DISPLAYNAME from 
+        SSRIRAM.users u join (select a.owneruserid as userid,count(*) as cnt  from 
+        ssriram.posts p join ssriram.posts a on a.acceptedanswerid = p.id 
+        and a.owneruserid is not null group by a.owneruserid) o on o.userid=u.id 
+        where location='".$locval."' order by o.cnt desc) where rownum < ".$num;
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              if($row['DISPLAYNAME']==' ') {
+                $html=$html."user".$row['ID']."</a>";
+              } else  {
+                $html=$html.$row['DISPLAYNAME']."</a>";
+              }
+              $html=$html."</li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
+
+  function GetTopBadgesForLoc($locval, $num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $cnt=0;
+      $sql = "SELECT * from (select b.name, count(*) as cnt from 
+        (select * from ssriram.badges where userid is not null) b join 
+        (select * from ssriram.users where location='".$locval."') u 
+        on b.userid=u.id group by b.name order by cnt desc) 
+        where rownum < ".$num;
+      
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              $html= $html."<a href=\"badges.php?badge=".$row['NAME']."\">"; 
+              $html=$html.$row['NAME']."</a>";
+              $html=$html."</li>";
+          }
+      }
+      if($cnt ==0) {
+        
+        $html="No Users";
+      }
+      print $html;
+      $db->done();
+  }
 
 ?>
