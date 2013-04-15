@@ -13,14 +13,14 @@
             <div id="content" style="float:left;width:930px;">
 	            <div itemscope="" itemtype="http://schema.org/Article">
             	    <div id="Badge-header">
-            		<h1 itemprop="name" style="text-align:center;">
+            		<h1 class="custom_h" style="text-align:center;">
 						<?php
                             echo $badgeval;
                         ?>
 					</h1>
                     </div>
                     <div id="BadgeList" style="float:left;">
-                    	<h4 >User List For Scholar Badge</h4>
+                    	<?php print '<h4 class="custom_h">User List for \''.$badgeval.'\' Badge</h4>' ?>
                     	<ul class="list">
                         	<?php 
                                 GetTopUsersForBadges($badgeval,10);
@@ -28,7 +28,7 @@
                         </ul>
                     </div>
                     <div id="sidebar" style="float:right;">
-                        <h4 >Top Locations for Scholar Badge</h4>
+                        <?php print '<h4 class="custom_h">Top Locations for \''.$badgeval.'\' Badge</h4>' ?>
                         <ul class="list">
                             <?php 
                                 GetTopLocationsForBadges($badgeval,10);
