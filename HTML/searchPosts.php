@@ -43,7 +43,7 @@
      print '<div>';
 
      $total = (int) $results->response->numFound;
-     print '<h3>Total Matches Found - '.$total.'</h3>';
+     print '<h3 class="custom_h">Total Matches Found - '.$total.'</h3>';
      print '<br>';
      print '<ul class="list">';
 
