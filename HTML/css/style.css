@@ -1,3 +1,77 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td { margin: 0; padding: 0; border: 0; outline: 0; }
+
+
+html, body {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+}
+
+#wrapper {
+   
+   min-height: 100%;
+}
+
+#main {
+    overflow:auto;
+    padding-bottom: 70px;
+} 
+
+#header {
+
+  margin: 0;
+  padding: 0;
+  background: /*#E5E6DD*/ /*#C4E2F5*/ /*#374147*/ #5C676E;
+  background-size:100% 100%;
+
+}
+
+#footer {
+
+  margin: 0;
+  padding: 10;
+  background: /*#E5E6DD*/ /*#C4E2F5*/ /*#374147*/ #5C676E;
+  font-family: "Times New Roman", Times, serif;
+  font-style:italic;
+  font-weight:bold;
+  font-size:12px;
+  text-align:center;
+  position: relative;
+  margin-top: -60px; /* negative value of footer height */
+  height: 40px;
+  clear:both;
+
+}
+
+h1.custom_h, h2.custom_h, h3.cutom_h, h4.custom_h {
+  margin: 0;
+  padding: 4 0 0 0;
+  font-weight: bold;
+  color: #000066;
+}
+
+h1.post {
+  text-align: left;
+}
+
+p {
+
+  margin:0.5em;
+
+}
+
+#userTable td {
+    padding: 5px 5px 5px 5px;
+    vertical-align: top;
+}
+
+#userTable thead th {
+    text-align: center;
+    font-size:20px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
 a.anchor-button {
   outline: 0;
   margin: 0 0px 0 0;
@@ -13,18 +87,33 @@ a.anchor-button {
 
 a.anchor-button:link {
 
-   color: #000000;
+   color: #101F29;
 
 }
 
 a.anchor-button:hover {
 
-   color: #0000ff;
+   color: #85C8F2;
+}
+
+a.custom_a:link {
+   color: #101F29;
+}
+
+a.custom_a:hover {
+   color: #85C8F2;
 }
 
 ul.list {
 
    list-style-type:square;
+   margin: 2em;
+
+}
+
+li {
+
+  padding-bottom: 0.5em;
 
 }
 
@@ -37,3 +126,5 @@ ul.list {
    text-align: justify;
    
 }
+
+

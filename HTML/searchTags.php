@@ -16,7 +16,7 @@
 
       if(strcasecmp($query, $tag) == 0){
 
-        header("location: http://localhost/~vishnusanjit/dbms/tag.php?tag=".$tag);
+        header("location: http://localhost/~vishnusanjit/HTML/tag.php?tag=".$tag);
         exit();
       
       }

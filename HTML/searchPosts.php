@@ -43,7 +43,7 @@
      print '<div>';
 
      $total = (int) $results->response->numFound;
-     print '<p style="text-align:center;"><b>Total Matches Found - '.$total.'</b></p>';
+     print '<h3>Total Matches Found - '.$total.'</h3>';
      print '<br>';
      print '<ul class="list">';
 
@@ -56,7 +56,7 @@
        $titleField = $doc->getField('title');
        $title = $titleField['value'];
 
-       print '<li><a href="viewPost.php?postId='.$postId.'&answerId='.$answerId.'">'.$title.'</a></li>';
+       print '<li><a class="custom_a" href="viewPost.php?postId='.$postId.'&answerId='.$answerId.'">'.$title.'</a></li>';
      
      }
 

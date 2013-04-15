@@ -7,10 +7,12 @@
    $userId = $handler->get_var('userId');
 
    //Debug-only
-   $userId = '5973';
+   //$userId = '5973';
 
-   printLogo();
+   printHeader();
 
    printUserProfile($userId);
+
+   printFooter();
 
 ?>

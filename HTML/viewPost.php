@@ -14,7 +14,7 @@
 
     <div id="content" style="margin: 0 auto;width: 960px; min-height: 450px">
       <div id="post_title" style="font-family: Trebuchet MS,Liberation Sans,DejaVu Sans,sans-serif;width: 960px;margin-bottom: 20px;">
-        <h1><?php echo $array[0] ?></h1>
+        <h1 class="post"><?php echo $array[0] ?></h1>
       </div>
       <div id="mainpost" style="float: left;margin-bottom: 40px; width: 735px;">
         <div id="question" style="clear: both; width: 728px;">
@@ -34,7 +34,7 @@
         <div id="answer" style="clear: both;padding-top: 10px;width: 728px;">
           <div id="answer-header" style="width: 728px;margin-top: 10px;margin-bottom: 10px;">
             <div style="border-bottom: 1px solid #cccccc;height: 54px;clear: both;">
-              <h2 style="float: left;font-size: 22px;line-height: 34px;margin-bottom: 0px;"> Accepted Answer </h2>
+              <h2 style="float: left;font-size: 22px;line-height: 34px;margin-bottom: 0.5em;"> Accepted Answer </h2>
             </div>
           </div>
           <div id="answer-text" style="width: 728px;padding-bottom: 20px;padding-top: 20px;">
@@ -52,8 +52,7 @@
       </div>
     </div>
 
-  </body>
+  <?php printFooter(); ?>
 
-</html>
 
 

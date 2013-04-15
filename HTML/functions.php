@@ -6,28 +6,23 @@
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                 <title>StackExplorer</title>
                 <link rel="stylesheet" type="text/css" href="css/style.css">
+                <script type="text/javascript" src=scripts/search.js></script>
                </head>
-             <body>';
+               <body>
+
+                  <div id="wrapper">';
 
     print $html;
 
     printLogo();
   }
 
-  function printFooter() {
-    $html = '<br/><br/>
-             <hr>
-            </body>
-         </html>';
-
-    print $html;
-  }
-
   function printLogo() {
 
-    $html = '<script type="text/javascript" src=scripts/search.js></script>
+    $html = '
+          <div id="header">
           <div style="display: inline-block; padding: 2px;"><a href="tagCloud.php"><img src="images/logo.png"></a></div>
-          <div style="float:right; padding:30px 60px 30px">
+          <div style="float:right; padding:45px 60px 30px">
             <table cellpadding="0px" cellspacing="0px">
              <tr>
                <td style="border-style:solid;border-color:#CCCCCC;border-width:1px;"> 
@@ -44,8 +39,25 @@
                </td>
              </tr>
             </table>
-            </div><br/><br/><hr>';
+           </div>
+           <br/>
+           <br/>
+          </div>
+
+          <div id=main>'; //Main content of page goes inside this div
            
+
+    print $html;
+  }
+
+  function printFooter() {
+    $html = '  </div> 
+             </div> 
+             <div id=footer>
+                     <p>Copyright &#169; 2013 StackExplorer</p>
+             </div>
+            </body>
+         </html>';
 
     print $html;
   }
@@ -62,38 +74,42 @@
 
     if($db->query($sql)) {
 
-      $html .= '<table width="80%" height="100%" border="0" cellpadding="0" cellspacing="5">';
+      $html .= '<table id="userTable" width="80%" height="100%" border="0" cellpadding="0" cellspacing="5">';
 
       while ($row = $db->fetch()) {
 
         //var_dump($row);
+        $html .= "<thead>";
 
-        $html .= "<tr><td colspan=2 align='center'>".$row['DISPLAYNAME']."</td></tr>";
+        $html .= "<tr><th colspan=2>".$row['DISPLAYNAME']."</th></tr>";
+
+        $html .= "</thead>";
+        $html .= "<tbody>";
 
         if($row['ABOUTME'] != NULL)
-         $html .=  "<tr><td>About Me</td><td>".$row['ABOUTME']->load()."</td></tr>";
+         $html .=  "<tr><td><b>About Me</b></td><td>".$row['ABOUTME']->load()."</td></tr>";
         else
-         $html .=  "<tr><td>About Me</td><td></td></tr>";
+         $html .=  "<tr><td><b>About Me</b></td><td></td></tr>";
 
         if($row['WEBSITEURL'] != NULL)
-         $html .=  "<tr><td>URL</td><td>".$row['WEBSITEURL']."</td></tr>";
+         $html .=  "<tr><td><b>URL</b></td><td>".$row['WEBSITEURL']."</td></tr>";
         else
-         $html .=  "<tr><td>URL</td><td></td></tr>";
+         $html .=  "<tr><td><b>URL</b></td><td></td></tr>";
 
         if($row['LOCATION'] != NULL)
-         $html .=  "<tr><td>Location</td><td>".$row['LOCATION']."</td></tr>";
+         $html .=  "<tr><td><b>Location</b></td><td><a class=\"custom_a\" href=\"locations.php?loc=".urlencode($row['LOCATION'])."\">".$row['LOCATION']."</a></td></tr>";
         else
-         $html .=  "<tr><td>Location</td><td></td></tr>";
+         $html .=  "<tr><td><b>Location</b></td><td></td></tr>";
 
         if($row['AGE'] != NULL)
-         $html .=  "<tr><td>Age</td><td>".$row['AGE']."</td></tr>";
+         $html .=  "<tr><td><b>Age</b></td><td>".$row['AGE']."</td></tr>";
         else
-         $html .=  "<tr><td>Age</td><td></td></tr>";
+         $html .=  "<tr><td><b>Age</b></td><td></td></tr>";
 
-        $html .=  "<tr><td>Reputation</td><td>".$row['REPUTATION']."</td></tr>";
-        $html .=  "<tr><td>Profile Views</td><td>".$row['VIEWS']."</td></tr>";
-        $html .=  "<tr><td>Up Votes</td><td>".$row['UPVOTES']."</td></tr>";
-        $html .=  "<tr><td>Down Votes</td><td>".$row['DOWNVOTES']."</td></tr>";
+        $html .=  "<tr><td><b>Reputation</b></td><td>".$row['REPUTATION']."</td></tr>";
+        $html .=  "<tr><td><b>Profile Views</b></td><td>".$row['VIEWS']."</td></tr>";
+        $html .=  "<tr><td><b>Up Votes</b></td><td>".$row['UPVOTES']."</td></tr>";
+        $html .=  "<tr><td><b>Down Votes</b></td><td>".$row['DOWNVOTES']."</td></tr>";
 
       }
 
@@ -121,11 +137,12 @@
 
          }
 
-         $html .=  "<tr><td>Badges Earned</td><td>".$badges."</td></tr>";
+         $html .=  "<tr><td><b>Badges Earned</b></td><td>".$badges."</td></tr>";
       
       }
 
 
+      $html .= "</tbody>";
       $html .=  '</table>';
 
 
@@ -209,9 +226,9 @@
               $cnt=$cnt+1;
               $html=$html."<li>";
               if($bool==1) {
-                $html= $html."<a href=\"viewPost.php?postId=".$row['ID']."\">";
+                $html= $html."<a class=\"custom_a\" href=\"viewPost.php?postId=".$row['ID']."\">";
               } else {
-                $html= $html."<a href=\"unanswered.php?postId=".$row['ID']."\">";
+                $html= $html."<a class=\"custom_a\" href=\"unanswered.php?postId=".$row['ID']."\">";
               }
               $html=$html.$row['TITLE'];
               $html=$html."</a></li>";
@@ -248,7 +265,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html= $html."<a class=\"custom_a\" href=\"userProfile.php?userId=".$row['ID']."\">";
               $html=$html.$row['DNAME'];
               $html=$html."</a></li>";
           }
@@ -312,7 +329,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html= $html."<a class=\"custom_a\" href=\"userProfile.php?userId=".$row['ID']."\">";
               $html=$html.$row['UNAME'];
               $html=$html."</a></li>";
           }
@@ -346,7 +363,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"locations.php?loc=".$row['LOCATION']."\">";
+              $html= $html."<a class=\"custom_a\" href=\"locations.php?loc=".$row['LOCATION']."\">";
               $html=$html.$row['LOCATION'];
               $html=$html."</a></li>";
           }
@@ -374,7 +391,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html= $html."<a class=\"custom_a\" href=\"userProfile.php?userId=".$row['ID']."\">";
               if($row['DISPLAYNAME']==' ') {
                 $html=$html."user".$row['ID']."</a>";
               } else  {
@@ -410,7 +427,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"userProfile.php?userId=".$row['ID']."\">";
+              $html= $html."<a class=\"custom_a\" href=\"userProfile.php?userId=".$row['ID']."\">";
               if($row['DISPLAYNAME']==' ') {
                 $html=$html."user".$row['ID']."</a>";
               } else  {
@@ -446,7 +463,7 @@
           while ($row = $db->fetch()) {
               $cnt=$cnt+1;
               $html=$html."<li>";
-              $html= $html."<a href=\"badges.php?badge=".$row['NAME']."\">"; 
+              $html= $html."<a class=\"custom_a\" href=\"badges.php?badge=".$row['NAME']."\">"; 
               $html=$html.$row['NAME']."</a>";
               $html=$html."</li>";
           }
