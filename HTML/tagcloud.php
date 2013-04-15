@@ -51,7 +51,7 @@
       $color = '#' . sprintf('%02s', dechex($r)) . sprintf('%02s', dechex($g)) . sprintf('%02s', dechex($b));
 
 
-      $cloud .= "<a class=\"anchor-button\" style=\"font-size: {$font_size}px;\" href=\"tag.php?tag=$word\">$word</a> ";
+      $cloud .= "<a class=\"anchor-button\" style=\"font-size: {$font_size}px;\" href=\"tag.php?tag=".urlencode($word)."\">$word</a> ";
 
     }
 
