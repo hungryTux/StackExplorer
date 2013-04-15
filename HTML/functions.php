@@ -128,9 +128,9 @@
            if($row['NAME'] != NULL){
              
              if($badges == '')
-              $badges .= $row['NAME'];
+              $badges .= "<a class=\"custom_a\" href=\"badges.php?badge=".urlencode($row['NAME'])."\">".$row['NAME']."</a>";
              else
-              $badges .= ', '.$row['NAME'];
+              $badges .= ", <a class=\"custom_a\" href=\"badges.php?badge=".urlencode($row['NAME'])."\">".$row['NAME']."</a>";
            
            }
 
