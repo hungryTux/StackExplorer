@@ -34,30 +34,6 @@
                     .draw(data, {title:'Total Users earned the badge month wise',width: 500, height: 500});
             }
         </script>
-
-<<<<<<< HEAD
-    	<div class="container" style="width:990px;">
-            <div id="content" style="float:left;width:930px;">
-	            <div itemscope="" itemtype="http://schema.org/Article">
-            	    <div id="Badge-header">
-            		<h1 class="custom_h" style="text-align:center;">
-						<?php
-                            echo $badgeval;
-                        ?>
-					</h1>
-                    </div>
-                    <div id="BadgeList" style="float:left;">
-                    	<?php print '<h4 class="custom_h">User List for \''.$badgeval.'\' Badge</h4>' ?>
-                    	<ul class="list">
-                        	<?php 
-                                GetTopUsersForBadges($badgeval,10);
-                            ?> 
-                        </ul>
-                    </div>
-                    <div id="sidebar" style="float:right;">
-                        <?php print '<h4 class="custom_h">Top Locations for \''.$badgeval.'\' Badge</h4>' ?>
-                        <ul class="list">
-=======
     </head>
     <body>
         <div id="wrapper">
@@ -74,17 +50,16 @@
             </div>
             <div id="content" style="">  
                 <div id="BadgeList" style="float:left;width:70%">
-                        <h3 >User List For Scholar Badge</h3>
-                        <ul style="">
+                        <?php print '<h4 class="custom_h">User List for \''.$badgeval.'\' Badge</h4>' ?>
+                        <ul class="list">
                             <?php 
                                 GetTopUsersForBadges($badgeval,11);
                             ?> 
                         </ul>
                 </div>
                 <div id="sidebar" style="float:right;width:30%;">
-                        <h3 style="text-align:center;">Top Locations for Scholar Badge</h3>
-                        <ul style="">
->>>>>>> layout Changes and functionalitites
+                        <?php print '<h4 class="custom_h">Top Locations for \''.$badgeval.'\' Badge</h4>' ?>
+                        <ul class="list">
                             <?php 
                                 GetTopLocationsForBadges($badgeval,11);
                             ?>
