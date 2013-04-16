@@ -1,46 +1,49 @@
-	<?php 
+<?php 
     include 'functions.php';
+    $tagval = $_GET["tag"]; 
     printHeader();
-	$tagval = $_GET["tag"]; ?>
-  
-            <div id="content" style="float:left;width:930px;">
-	            <div itemscope="" itemtype="http://schema.org/Article">
-           	      <div id="Badge-header">
-            		<h1 class="custom_h" itemprop="name" style="text-align:center;"><?php echo $tagval; ?></h1>
-                    </div>
-                    <div id="TagDetails" style="float:left;position:relative;
-left:0;">
-                    <div id="Answered List">
-                    	<p>Answered Questions</p>
-                    	<ul class="list">
-                        <?php 
-                          
-                          GetQuestionsForTag($tagval,1,6);
-                        ?> 	
-                      </ul>
-                    </div>
-                    <div id="Unanswered List" style="">
-                    	<p>Unanswered Questions</p>
-                    	<ul class="list">
-                        <?php
-						 
-                          	GetQuestionsForTag($tagval,0,6);
-                        ?> 
+?> 
+        <div class="container" style="">
+            <div id="Tag-header">
+                <h1 itemprop="name" style="text-align:center;">
+                    <?php 
+                        echo $tagval; 
+                    ?>
+                </h1>
+            </div>
+            <div id="content" style="">
+                <div id="TagDetails" style="float:left;">
+                    <div id="Answered List" style="">
+                        <h3 style="text-align:center;">Favourite Answered Questions</h3>
+                        <ul style="">
+                            <?php 
+                                GetQuestionsForTag($tagval,1,11);
+                            ?>  
                         </ul>
                     </div>
+                    <div id="Unanswered List" style="">
+                        <h3 style="text-align:center;">Favourite Unanswered Questions</h3>
+                        <ul style="">
+                            <?php
+                                GetQuestionsForTag($tagval,0,11);
+                            ?> 
+                        </ul>
                     </div>
-                    <div id="sidebar" style="float:right;">
+                </div>
+                <div id="sidebar" style="float:right; width:30%;">
                     <div class="module newuser newuser-greeting" id="newuser-box" style="">
-                    	  <p>Top Users</p>
+                        <h3 style="text-align:center;">Top Users</h3>
                         <div>
-                            <ul class="list">
-                            	<?php
-                                    GetUsersForTag($tagval,6);
+                            <ul style="">
+                                <?php
+                                    GetUsersForTag($tagval,11);
                                 ?> 
                             </ul>
                         </div>
                     </div>
-                    </div>
-                    </div>
-
-<?php printFooter(); ?>
+                </div>
+            </div>
+        </div>
+<?php                     
+    printFooter();
+?> 

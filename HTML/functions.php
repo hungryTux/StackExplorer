@@ -51,13 +51,14 @@
   }
 
   function printFooter() {
-    $html = '  </div> 
+    $html = "  </div> 
              </div> 
              <div id=footer>
-                     <p>Copyright &#169; 2013 StackExplorer</p>
+                  <a href=\"devpage.php\" ><h4>Nithin Reddy . Vishnu Sanjit . Sriram Shridharan . Bharath Yarlagadda</h4></a>
+                  <p>Copyright &#169; 2013 StackExplorer</p>   
              </div>
             </body>
-         </html>';
+         </html>";
 
     print $html;
   }
@@ -218,7 +219,7 @@
       $sql = "SELECT * from(SELECT p.title as TITLE, p.id as ID from ssriram.posts p 
         join (SELECT count(*) as cnt, postid from ssriram.votes where votetypeid=5 
         group by postid order by cnt desc)v on v.postid=p.id  
-        where p.acceptedanswerid ".$compval." and p.tags like '%<".$tagval.">%' 
+        where p.posttypeid = 1 and p.acceptedanswerid ".$compval." and p.tags like '%<".$tagval.">%' 
         order by v.cnt desc )where rownum < ".$num;
       //$sql = "SELECT p.title as TITLE, p.id as ID from ssriram.posts p join ( SELECT count(*) as cnt, postid from ssriram.votes where votetypeid=5 and rownum < ".$num." group by postid ) v on v.postid=p.id  where p.acceptedanswerid ".$compval." and p.tags like '<%".$tagval."%>' order by v.cnt desc";
       if($db->query($sql)) {
@@ -226,9 +227,9 @@
               $cnt=$cnt+1;
               $html=$html."<li>";
               if($bool==1) {
-                $html= $html."<a class=\"custom_a\" href=\"viewPost.php?postId=".$row['ID']."\">";
+                $html= $html."<a href=\"viewPost.php?postId=".$row['ID']."\">";
               } else {
-                $html= $html."<a class=\"custom_a\" href=\"unanswered.php?postId=".$row['ID']."\">";
+                $html= $html."<a href=\"unanswered.php?postId=".$row['ID']."\">";
               }
               $html=$html.$row['TITLE'];
               $html=$html."</a></li>";
@@ -475,5 +476,117 @@
       print $html;
       $db->done();
   }
+function getDataArray($badgeval) {
+
+      require_once 'dbUtil.php';
+
+      $html = "[['months','Users'],";
+
+      $db = new dbUtil();
+      $cnt=0;
+      //select s.displayname from (select owneruserid from SSRIRAM.posts where rownum < 6 and 
+      // tags like '%<ajax>%' group by owneruserid order by count(*) desc) 
+      // o join ssriram.users s on o.owneruserid = s.id;
+      /*select count(*),location from ssriram.users 
+      where id in (select userid from ssriram.badges where name='Teacher') 
+      group by location order by count (*) desc;*/
+      $sql = "SELECT count(b.date_) as CNT, trunc(b.date_,'mon') 
+              as BDATE from ssriram.badges b where name='".$badgeval."' 
+              group by trunc(b.date_,'mon') order by trunc(b.date_,'mon')";
+      if($db->query($sql)) {
+          $row=$db->fetch();
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              if($cnt > 1) {
+                $html=$html.",";
+              }
+              $html=$html."[";
+              $html=$html."'".$row['BDATE']."'";
+              $html=$html.",".$row['CNT'];
+              $html=$html."]";
+          }
+      }
+      $html=$html."]";
+      print $html;
+      $db->done();
+  }
+
+  function GetFavQuestionsForLoc($locval,$bool,$num) {
+
+      require_once 'dbUtil.php';
+
+      $html = '';
+
+      $db = new dbUtil();
+      $compval = 'is null';
+      if($bool==  1){
+          $compval= '>0';
+      }
+      $cnt=0;
+      $sql = "SELECT * from(select v.cnt, p.id as ID, p.title as TITLE from ssriram.posts p join 
+        (select count(postid) as cnt, postid from ssriram.votes where 
+        votetypeid=5 and userid in (select id from ssriram.users where 
+        location='".$locval."') group by postid ) v on p.id=v.postid where 
+        p.acceptedanswerid ".$compval." and p.posttypeid=1 order by v.cnt desc)
+        where rownum < ".$num;
+      //$sql = "SELECT p.title as TITLE, p.id as ID from ssriram.posts p join ( SELECT count(*) as cnt, postid from ssriram.votes where votetypeid=5 and rownum < ".$num." group by postid ) v on v.postid=p.id  where p.acceptedanswerid ".$compval." and p.tags like '<%".$tagval."%>' order by v.cnt desc";
+      if($db->query($sql)) {
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              $html=$html."<li>";
+              if($bool==1) {
+                $html= $html."<a href=\"viewPost.php?postId=".$row['ID']."\">";
+              } else {
+                $html= $html."<a href=\"unanswered.php?postId=".$row['ID']."\">";
+              }
+              $html=$html.$row['TITLE'];
+              $html=$html."</a></li>";
+          }
+      }
+      if($cnt ==0) {
+        if($bool==0) {
+            $html="No Unanswered Questions";
+        }
+      }
+      print $html;
+      $db->done();
+  }
+
+  function getLocArray($locval) {
+
+      require_once 'dbUtil.php';
+
+      $html = "[['week','Users'],";
+
+      $db = new dbUtil();
+      $cnt=0;
+      //select s.displayname from (select owneruserid from SSRIRAM.posts where rownum < 6 and 
+      // tags like '%<ajax>%' group by owneruserid order by count(*) desc) 
+      // o join ssriram.users s on o.owneruserid = s.id;
+      /*select count(*),location from ssriram.users 
+      where id in (select userid from ssriram.badges where name='Teacher') 
+      group by location order by count (*) desc;*/
+      $sql = "SELECT trunc(creationdate,'day') as LDATE,count(creationdate) as 
+              cnt from SSRIRAM.users where location='".$locval."' 
+              group by trunc(creationdate,'day') order by trunc(creationdate,'day')";
+      if($db->query($sql)) {
+          //echo "<a href=\"userProfile.php?userId=".$row['ID']."\">assds</a>";
+          while ($row = $db->fetch()) {
+              $cnt=$cnt+1;
+              if($cnt > 1) {
+                $html=$html.",";
+              }
+              $html=$html."[";
+              $html=$html."'".$row['LDATE']."'";
+              $html=$html.",".$row['CNT'];
+              $html=$html."]";
+          }
+      }
+      $html=$html."]";
+      print $html;
+      $db->done();
+  }
 
 ?>
+
